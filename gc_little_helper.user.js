@@ -291,6 +291,7 @@ var gclhConfigKeysIgnoreForBackup = {"token": true,  "settings_configsync_config
 var CONFIG = JSON.parse(GM_getValue( "CONFIG", '{}' ));
 
 function setValue( name, value ){
+  console.log("SET " + name +":\t"+ value);
   CONFIG[name] = value;
   if(gclhConfigKeys[name] === undefined && !gclhConfigKeysIgnoreForBackup[name]){
     gclhConfigKeys[name] = null;
