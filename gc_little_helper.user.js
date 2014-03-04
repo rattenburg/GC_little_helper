@@ -24,7 +24,7 @@
 // @grant          GM_getResourceText
 // @grant          GM_registerMenuCommand
 // ==/UserScript==
-
+/*XXXXXXXX*/ var TIME = +new Date(); function LOG() { console.log(new Error().stack.split("\n")[1].replace(/^.*\/([^\/]+):(\d+)$/,"$1:$2")+"\t>> "+(+new Date()-TIME)); }; /*XXXXXXXX*/
 var operaHelperInitComplete = false;
 var operaHelperDomLoaded = false;
 var chromeUserData = {};
@@ -6298,3 +6298,4 @@ function injectPageScript(scriptContent){
 function injectPageScriptFunction(funct, functCall){
     injectPageScript("("+funct.toString()+")"+functCall+";");    
 }
+/*XXXXXXXX*/ LOG(); /*XXXXXXXX*/
