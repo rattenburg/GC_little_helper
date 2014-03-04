@@ -25,6 +25,8 @@
 // @grant          GM_registerMenuCommand
 // ==/UserScript==
 /*XXXXXXXX*/ var TIME = +new Date(); function LOG() { console.log(new Error().stack.split("\n")[1].replace(/^.*\/([^\/]+):(\d+)$/,"$1:$2")+"\t>> "+(+new Date()-TIME)); }; /*XXXXXXXX*/
+if(window.name.substring(0, 18) != 'google_ads_iframe_') {  // don't run on advertisement iframes
+
 var operaHelperInitComplete = false;
 var operaHelperDomLoaded = false;
 var chromeUserData = {};
@@ -296,8 +298,8 @@ var set=0;function setValue( name, value ){var start=+new Date();
     gclhConfigKeys[name] = null;
     CONFIG["gclhConfigKeys"] = JSON.stringify(gclhConfigKeys);
   }*/
-  GM_setValue("CONFIG",JSON.stringify(CONFIG));
-console.log("set"+(++set)+" "+name+":\t"+(+new Date()-start));}
+  GM_setValue("CONFIG",JSON.stringify(CONFIG)); set++; console.log("set"+set+" "+name+":\t"+(+new Date()-start));
+}
 
 var get=0;function getValue( name, defaultValue ){var start=+new Date();
   if(CONFIG[name] === undefined) { // Zum Migrieren aus dem alten Speicherformat
@@ -308,7 +310,7 @@ var get=0;function getValue( name, defaultValue ){var start=+new Date();
     gclhConfigKeys[name] = null;
     CONFIG["gclhConfigKeys"] = JSON.stringify(gclhConfigKeys);
     GM_setValue("CONFIG",JSON.stringify(CONFIG));
-  }*/console.log("get"+(++get)+" "+name+":\t"+(+new Date()-start));
+  }*/ get++; if(CONFIG[name] === undefined) console.log("get"+get+" "+name+":\t"+(+new Date()-start));
   return CONFIG[name];
 }
 
@@ -458,20 +460,20 @@ var num = bookmarks.length;
 for(var i=0; i<anzCustom; i++){
   bookmarks[num] = Object();
   
-  if(typeof(getValue("settings_custom_bookmark["+i+"]")) != "undefined" && getValue("settings_custom_bookmark["+i+"]") != ""){
+  if(getValue("settings_custom_bookmark["+i+"]", "") != ""){
     bookmarks[num]['href'] = getValue("settings_custom_bookmark["+i+"]");
   }else{
     bookmarks[num]['href'] = "#";
   }
   
-  if(typeof(getValue("settings_bookmarks_title["+num+"]")) != "undefined" && getValue("settings_bookmarks_title["+num+"]") != ""){
+  if(getValue("settings_bookmarks_title["+num+"]", "") != ""){
     bookmarks[num]['title'] = getValue("settings_bookmarks_title["+num+"]");
   }else{
     bookmarks[num]['title'] = "Custom"+i;
     setValue("settings_bookmarks_title["+num+"]",bookmarks[num]['title']);
   }
   
-  if(typeof(getValue("settings_custom_bookmark_target["+i+"]")) != "undefined" && getValue("settings_custom_bookmark_target["+i+"]") != ""){
+  if(getValue("settings_custom_bookmark_target["+i+"]", "") != ""){
     bookmarks[num]['target'] = getValue("settings_custom_bookmark_target["+i+"]");
     bookmarks[num]['rel'] = "external";
   }else{
@@ -490,7 +492,7 @@ bookmark("Field Notes", "/my/fieldnotes.aspx");
 // Settings: Custom Bookmark-title
 var bookmarks_orig_title = new Array();
 for(var i=0; i<bookmarks.length; i++){
-  if(typeof(getValue("settings_bookmarks_title["+i+"]")) != "undefined" && getValue("settings_bookmarks_title["+i+"]") != ""){
+  if(getValue("settings_bookmarks_title["+i+"]", "") != ""){
     bookmarks_orig_title[i] = bookmarks[i]['title']; // Needed for configuration
     bookmarks[i]['title'] = getValue("settings_bookmarks_title["+i+"]");
   }
@@ -511,6 +513,9 @@ if(typeof opera == "object"){
 else{
   main();
 }
+
+console.log(get+" / "+set);
+} // ENDIF don't run on advertisement iframes
 
 // Wrapper, um zu pruefen auf welche Seite der Link zeigt - um zu vermeiden, die URL-Abfrage mehrfach im Quelltext wiederholen zu muessen
 function is_link(name,url){
@@ -5034,7 +5039,7 @@ try{
         var uid = links[i].href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
         uid = uid[1];
   
-        if(getValue["uid"] != uid) setValue("uid",uid);
+        if(getValue("uid") != uid) setValue("uid",uid);
       }
     }
   }
@@ -6325,4 +6330,3 @@ function injectPageScriptFunction(funct, functCall){
     injectPageScript("("+funct.toString()+")"+functCall+";");    
 }
 /*XXXXXXXX*/ LOG(); /*XXXXXXXX*/
-console.log(get+" / "+set);
