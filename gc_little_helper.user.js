@@ -293,6 +293,7 @@ var CONFIG = JSON.parse(GM_getValue( "CONFIG", '{}' ));
 var gclhConfigKeysIgnoreForBackup = {"token": true,  "settings_configsync_configid": true, "doPostBack_after_redirect": true, "dbToken": true, "hide_contribute": true};
 
 var set=0;function setValue( name, value ){var start=+new Date();
+  console.log("SET " + name +":\t"+ value);
   CONFIG[name] = value;
   /*if(gclhConfigKeys[name] === undefined && !gclhConfigKeysIgnoreForBackup[name]){
     gclhConfigKeys[name] = null;
@@ -2244,7 +2245,7 @@ try{
     if(matches) document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML = decodeURIComponent(matches[1]);
     
     // Add Mail-Signature
-    if(typeof(getValue("settings_mail_signature")) != "undefined" && getValue("settings_mail_signature") != ""){
+    if(getValue("settings_mail_signature", "") != ""){
       var me = "#me#";
       if(getElementsByClass("SignedInProfileLink")[0]) me = getElementsByClass("SignedInProfileLink")[0].innerHTML;
       document.getElementById("ctl00_ContentBody_SendMessagePanel1_tbMessage").innerHTML += "\n\n"+getValue("settings_mail_signature").replace(/#me#/g,me);
@@ -5039,7 +5040,7 @@ try{
         var uid = links[i].href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
         uid = uid[1];
   
-        if(getValue("uid") != uid) setValue("uid",uid);
+        if(getValue("uid", "") != uid) setValue("uid",uid);
       }
     }
   }
@@ -5118,7 +5119,7 @@ try{
   
   // Redirect to My Trackables
   function linkToMyTrackables(){
-    if(typeof(getValue("uid")) == "undefined"){
+    if(getValue("uid", "") == ""){
       if(window.confirm("To use this Link, the script has to know your uid. Just load the \"My Profile\" site and the script will save it automatically.")) document.location.href = "http://www.geocaching.com/my/";
     }else{
       document.location.href = "http://www.geocaching.com/track/search.aspx?o=1&uid="+getValue("uid");
@@ -5629,7 +5630,7 @@ function gclh_showConfig(){
         html += ">"+(typeof(bookmarks_orig_title[i]) != "undefined" && bookmarks_orig_title[i] != "" ? bookmarks_orig_title[i] : bookmarks[i]['title'])+"</a>";
       }
       html += "</td>";
-      html += "    <td align='left' style='padding: 4px 2px;'>  <input style='padding-left: 2px; padding-right: 2px;'  class='gclh_form' id='bookmarks_name["+i+"]' type='text' size='15' value='"+(typeof(getValue("settings_bookmarks_title["+i+"]")) != "undefined" ? getValue("settings_bookmarks_title["+i+"]") : "")+"'></td>"; 
+      html += "    <td align='left' style='padding: 4px 2px;'>  <input style='padding-left: 2px; padding-right: 2px;'  class='gclh_form' id='bookmarks_name["+i+"]' type='text' size='15' value='"+getValue("settings_bookmarks_title["+i+"]", "")+"'></td>"; 
       html += "  </tr>";
     } 
     html += " </tbody>";
