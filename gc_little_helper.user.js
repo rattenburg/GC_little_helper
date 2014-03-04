@@ -5012,7 +5012,7 @@ try{
         var uid = links[i].href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
         uid = uid[1];
   
-        if(getValue["uid"] != uid) setValue("uid",uid);
+        if(getValue("uid") != uid) setValue("uid",uid);
       }
     }
   }
