@@ -5005,10 +5005,10 @@ try{
 	  var logger = aLog[0].innerHTML;
 	  if(logger === me)
 		for(var j=0; j<2; j++)
-		  trLogs[i+j].setAttribute("class", trLogs[i+j].getAttribute("class") + " TertiaryRow");
+		  trLogs[i+j].className += " TertiaryRow";
       else if(logger === owner)
 		for(var j=0; j<2; j++)
-		  trLogs[i+j].setAttribute("class", trLogs[i+j].getAttribute("class") + " QuaternaryRow");
+		  trLogs[i+j].className += " QuaternaryRow";
 	}
   }
 }catch(e){ gclh_error("Improve Trackable Log Lists Color",e); }
