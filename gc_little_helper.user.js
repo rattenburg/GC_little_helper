@@ -5839,6 +5839,8 @@ var mainGC = function () {
         if (document.location.href.match(/^https?:\/\/www\.geocaching\.com\/track\/details\.aspx\?/)) {
             // css code copied from feature "Improve Search Lists color"
             var css = "table.Table tr.QuaternaryRow td, .QuaternaryRow, table.Table tr td.QuaternaryRow { background-color: #e0e0c3; }";
+			css += "#TrackableDetails ~ table.TrackableItemLogTable tr.QuaternaryRow, #TrackableDetails ~ table.Table tr.QuaternaryRow td { background-color: #e0e0c3; }";
+			css += "#TrackableDetails ~ table.TrackableItemLogTable tr.TertiaryRow, #TrackableDetails ~ table.Table tr.TertiaryRow td { background-color: #c2e0c3; }";
             var head = document.getElementsByTagName('head')[0];
             var style = document.createElement('style');
             style.type = 'text/css';
